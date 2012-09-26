@@ -1,3 +1,4 @@
+[![Build Status](https://secure.travis-ci.org/componitable/format-number.png)](http://travis-ci.org/componitable/format-number)
 # format-number
  
 <a name="defaults" />
