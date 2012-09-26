@@ -5,7 +5,7 @@ function formatter(options) {
   options.negative = options.negative === 'R' ? 'R' : 'L';
   options.negativeOut = options.negativeOut === false ? false : true;
   options.prefix = options.prefix || '';
-  options.postfix = options.postfix || '';
+  options.suffix = options.suffix || '';
   options.separator = typeof options.separator === 'string' ? options.separator : ',';
   options.decimal = options.decimal || '.';
   
@@ -31,7 +31,7 @@ function formatter(options) {
       output.push(options.prefix);
     }
 
-    number = number.split(options.decmal);
+    number = number.split(options.decimal);
     if (options.padLeft) number[0] = padLeft(number[0], options.padLeft);
     if (separate) number[0] = addSeparators(number[0], options.separator);
     output.push(number[0]);
@@ -44,13 +44,13 @@ function formatter(options) {
 
 
     if (options.negativeOut && includeUnits) {
-      output.push(options.postfix);
+      output.push(options.suffix);
     }
     if (negative && options.negative === 'R') {
       output.push('-');
     }
     if (!options.negativeOut && includeUnits) {
-      output.push(options.postfix);
+      output.push(options.suffix);
     }
 
     return output.join('');
@@ -59,7 +59,7 @@ function formatter(options) {
   format.negative = options.negative;
   format.negativeOut = options.negativeOut;
   format.prefix = options.prefix;
-  format.postfix = options.postfix;
+  format.suffix = options.suffix;
   format.separate = options.separate;
   format.separator = options.separator;
   format.decimal = options.decimal;
@@ -67,6 +67,36 @@ function formatter(options) {
   format.padRight = options.padRight;
   format.truncate = options.truncate;
 
+  function unformat(number, allowedSeparators) {
+    allowedSeparators = allowedSeparators || [];
+    if (options.allowedSeparators) {
+      options.allowedSeparators.forEach(function (s) { allowedSeparators.push (s); });
+    }
+    allowedSeparators.push(options.separator);
+    number = number.replace(options.prefix, '');
+    number = number.replace(options.suffix, '');
+    var newNumber = number;
+    do {
+      number = newNumber;
+      for (var i = 0; i < allowedSeparators.length; i++) {
+        newNumber = newNumber.replace(allowedSeparators[i], '');
+      }
+    } while (newNumber != number);
+    return number;
+  }
+  format.unformat = unformat;
+
+  function validate(number, allowedSeparators) {
+    number = unformat(number, allowedSeparators);
+    number = number.split(options.decimal);
+    if (number.length > 2) {
+      return false;
+    } else if (options.truncate && number[1] && number[1].length > options.truncate) {
+      return false;
+    } else {
+      return /^\d*\.\d*$/.test(number);
+    }
+  }
   return format;
 }
 
@@ -90,7 +120,11 @@ function padLeft(x, padding) {
   return buf.join('') + x;
 }
 function padRight(x, padding) {
-  x = x + '';
+  if (x) {
+    x += '';
+  } else {
+    x = '';
+  }
   var buf = [];
   while (buf.length + x.length < padding) {
     buf.push('0');
