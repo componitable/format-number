@@ -35,7 +35,7 @@ function formatter(options) {
     if (options.padLeft) number[0] = padLeft(number[0], options.padLeft);
     if (separate) number[0] = addSeparators(number[0], options.separator);
     output.push(number[0]);
-    if (options.padRight) nubmer[1] = padRight(number[1], options.padRight);
+    if (options.padRight) number[1] = padRight(number[1], options.padRight);
     if (options.truncate) number[1] = truncate(number[1], options.truncate);
     if (number[1]) {
       output.push(options.decimal);
