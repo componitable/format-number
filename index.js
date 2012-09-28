@@ -12,10 +12,10 @@ function formatter(options) {
   function format(number, includeUnits, separate) {
     includeUnits = includeUnits === false ? false : true;
     separate = separate === false ? false : true;
-    if (!number && number != 0) {
-      return '';
-    } else {
+    if (number || number === 0) {
       number = '' + number;//convert number to string if it isn't already
+    } else {
+      return '';
     }
     var output = [];
     var negative = number.charAt(0) === '-';

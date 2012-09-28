@@ -32,7 +32,7 @@ describe('defaults', function () {
     it('returns 56.43', function () {
       expect(format('56.43')).to.be('56.43');
     });
-  })
+  });
 });
 
 describe('padRight=2', function () {
@@ -124,6 +124,11 @@ describe('suffix=" items"', function () {
   describe('-512', function () {
     it('returns -512 items', function () {
       expect(format('-512')).to.be('-512 items');
+    });
+  });
+  describe('""', function () {
+    it('returns ""', function () {
+      expect(format('')).to.be('');
     });
   });
   
