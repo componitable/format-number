@@ -36,7 +36,7 @@ function formatter(options) {
     if (separate) number[0] = addSeparators(number[0], options.separator);
     output.push(number[0]);
     if (options.padRight) number[1] = padRight(number[1], options.padRight);
-    if (options.truncate) number[1] = truncate(number[1], options.truncate);
+    if (options.truncate != null) number[1] = truncate(number[1], options.truncate);
     if (number[1]) {
       output.push(options.decimal);
       output.push(number[1]);
@@ -91,7 +91,7 @@ function formatter(options) {
     number = number.split(options.decimal);
     if (number.length > 2) {
       return false;
-    } else if (options.truncate && number[1] && number[1].length > options.truncate) {
+    } else if (options.truncate != null && number[1] && number[1].length > options.truncate) {
       return false;
     } else {
       return /^\d*\.\d*$/.test(number);
