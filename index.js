@@ -94,7 +94,7 @@ function formatter(options) {
     } else if (options.truncate != null && number[1] && number[1].length > options.truncate) {
       return false;
     } else {
-      return /^\d*\.\d*$/.test(number);
+      return /^-?\d+\.?\d*$/.test(number);
     }
   }
   return format;
