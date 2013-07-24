@@ -1,6 +1,6 @@
 {
   "name": "format-number",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Formats numbers with separators every 3 digits and currency etc. Highly configurable.",
   "main": "index.js",
   "scripts": {
