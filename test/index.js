@@ -83,6 +83,35 @@ describe('truncate=2', function () {
   });
 });
 
+describe('round=2', function () {
+  var format = formatFactory({round: 2});
+  describe('512', function () {
+    it('returns 512', function () {
+      expect(format('512')).to.be('512');
+    });
+  });
+  describe('512.4', function () {
+    it('returns 512.4', function () {
+      expect(format('512.4')).to.be('512.4');
+    });
+  });
+  describe('512.43', function () {
+    it('returns 512.43', function () {
+      expect(format('512.43')).to.be('512.43');
+    });
+  });
+  describe('512.435', function () {
+    it('returns 512.44', function () {
+      expect(format('512.435')).to.be('512.44');
+    });
+  });
+  describe('512.434', function () {
+    it('returns 512.43', function () {
+      expect(format('512.434')).to.be('512.43');
+    });
+  });
+});
+
 describe('prefix=£', function () {
   var format = formatFactory({prefix: '£'});
   describe('512', function () {

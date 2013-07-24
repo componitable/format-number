@@ -37,6 +37,7 @@ function formatter(options) {
     output.push(number[0]);
     if (options.padRight) number[1] = padRight(number[1], options.padRight);
     if (options.truncate != null) number[1] = truncate(number[1], options.truncate);
+    if (options.round != null) round(number, options.round)
     if (number[1]) {
       output.push(options.decimal);
       output.push(number[1]);
@@ -66,6 +67,7 @@ function formatter(options) {
   format.padLeft = options.padLeft;
   format.padRight = options.padRight;
   format.truncate = options.truncate;
+  format.round = options.round;
 
   function unformat(number, allowedSeparators) {
     allowedSeparators = allowedSeparators || [];
@@ -92,6 +94,8 @@ function formatter(options) {
     if (number.length > 2) {
       return false;
     } else if (options.truncate != null && number[1] && number[1].length > options.truncate) {
+      return false;
+    }  else if (options.round != null && number[1] && number[1].length > options.round) {
       return false;
     } else {
       return /^-?\d+\.?\d*$/.test(number);
@@ -139,5 +143,25 @@ function truncate(x, length) {
     return x.substr(0, length);
   } else {
     return x;
+  }
+}
+function round(number, length) {
+  if (!number[1]) return number
+  var x = number[1] + ''
+  var y = number[0] + ''
+  if (x.length > length) {
+    var decider = +x[length]
+    var modified = +(length === 0 ? y[y.length - 1] : x[length - 1])
+    if (decider >= 5) {
+      modified = modified + 1
+    }
+    if (length === 0) {
+      number[0] = y.substring(0, y.length - 1) + modified
+    } else {
+      number[1] = x.substring(0, length - 1) + modified
+    }
+    return number
+  } else {
+    return number
   }
 }
