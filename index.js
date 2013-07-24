@@ -32,11 +32,11 @@ function formatter(options) {
     }
 
     number = number.split(options.decimal);
-    if (options.padLeft) number[0] = padLeft(number[0], options.padLeft);
-    if (separate) number[0] = addSeparators(number[0], options.separator);
-    if (options.padRight) number[1] = padRight(number[1], options.padRight);
-    if (options.truncate != null) number[1] = truncate(number[1], options.truncate);
     if (options.round != null) round(number, options.round);
+    if (options.truncate != null) number[1] = truncate(number[1], options.truncate);
+    if (options.padLeft) number[0] = padLeft(number[0], options.padLeft);
+    if (options.padRight) number[1] = padRight(number[1], options.padRight);
+    if (separate) number[0] = addSeparators(number[0], options.separator);
     output.push(number[0]);
     if (number[1]) {
       output.push(options.decimal);
@@ -169,7 +169,7 @@ function round(number, length) {
       number[1] = decim + decider
     } else {
       integ = (+integ) + 1
-      number[0] = integ
+      number[0] = integ + ''
       number.pop()
     }
     return number
