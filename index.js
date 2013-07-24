@@ -34,10 +34,10 @@ function formatter(options) {
     number = number.split(options.decimal);
     if (options.padLeft) number[0] = padLeft(number[0], options.padLeft);
     if (separate) number[0] = addSeparators(number[0], options.separator);
-    output.push(number[0]);
     if (options.padRight) number[1] = padRight(number[1], options.padRight);
     if (options.truncate != null) number[1] = truncate(number[1], options.truncate);
-    if (options.round != null) round(number, options.round)
+    if (options.round != null) round(number, options.round);
+    output.push(number[0]);
     if (number[1]) {
       output.push(options.decimal);
       output.push(number[1]);
@@ -147,18 +147,30 @@ function truncate(x, length) {
 }
 function round(number, length) {
   if (!number[1]) return number
-  var x = number[1] + ''
-  var y = number[0] + ''
-  if (x.length > length) {
-    var decider = +x[length]
-    var modified = +(length === 0 ? y[y.length - 1] : x[length - 1])
+  var integ = number[0] + ''
+  var decim = number[1] + ''
+  if (decim.length > length) {
+    var decider = +decim[length]
     if (decider >= 5) {
-      modified = modified + 1
-    }
-    if (length === 0) {
-      number[0] = y.substring(0, y.length - 1) + modified
+      decider = 10
+      decim = decim.substring(0, length)
+    } else if (length === 0) {
+      number.pop()
+      return number
     } else {
-      number[1] = x.substring(0, length - 1) + modified
+      number[1] = decim.substring(0, length)
+      return number
+    }
+    while (decider === 10 && decim.length) {
+      decider = (+decim[decim.length - 1]) + 1
+      decim = decim.substring(0, decim.length - 1)
+    }
+    if (decider < 10) {
+      number[1] = decim + decider
+    } else {
+      integ = (+integ) + 1
+      number[0] = integ
+      number.pop()
     }
     return number
   } else {

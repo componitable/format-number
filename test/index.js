@@ -112,6 +112,30 @@ describe('round=2', function () {
   });
 });
 
+describe('round=0', function () {
+  var format = formatFactory({round: 0});
+  describe('512', function () {
+    it('returns 512', function () {
+      expect(format('512')).to.be('512');
+    });
+  });
+  describe('512.4', function () {
+    it('returns 512', function () {
+      expect(format('512.4')).to.be('512');
+    });
+  });
+  describe('512.43', function () {
+    it('returns 512', function () {
+      expect(format('512')).to.be('512');
+    });
+  });
+  describe('512.50', function () {
+    it('returns 513', function () {
+      expect(format('512.50')).to.be('513');
+    });
+  });
+});
+
 describe('prefix=£', function () {
   var format = formatFactory({prefix: '£'});
   describe('512', function () {
