@@ -83,6 +83,30 @@ describe('truncate=2', function () {
   });
 });
 
+describe('truncate=-2', function () {
+  var format = formatFactory({truncate: -2});
+  describe('512', function () {
+    it('returns 510', function () {
+      expect(format('512')).to.be('510');
+    });
+  });
+  describe('512.4', function () {
+    it('returns 510', function () {
+      expect(format('512.4')).to.be('510');
+    });
+  });
+  describe('512.43', function () {
+    it('returns 510', function () {
+      expect(format('512.43')).to.be('510');
+    });
+  });
+  describe('512.435', function () {
+    it('returns 510', function () {
+      expect(format('512.435')).to.be('510');
+    });
+  });
+});
+
 describe('round=2', function () {
   var format = formatFactory({round: 2});
   describe('512', function () {
@@ -184,7 +208,7 @@ describe('suffix=" items"', function () {
       expect(format('')).to.be('');
     });
   });
-  
+
   describe('with includeUnits as false', function () {
     describe('512', function () {
       it('returns 512', function () {
