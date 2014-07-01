@@ -142,7 +142,7 @@
     }
     if (x && x.length > length && length > 0) {
       n[1] = x.substr(0, length);
-    } else if (d && length < 0 && d.length > Math.abs(length)) {
+    } else if (d && length < 0 && d.length >= Math.abs(length)) {
     var digitals = Math.abs(length)-1;
     var buf = [];
     while (digitals > buf.length) {
