@@ -13,7 +13,7 @@ function formatter(options) {
     includeUnits = includeUnits === false ? false : true;
     separate = separate === false ? false : true;
     if (number || number === 0) {
-      number = '' + number;//convert number to string if it isn't already
+      number = '' + number;//convert number to string if it is not already
     } else {
       return '';
     }
