@@ -88,8 +88,8 @@ function formatter(options) {
     if (options.truncate != null) number[1] = truncate(number[1], options.truncate);
     if (options.padLeft > 0) number[0] = padLeft(number[0], options.padLeft);
     if (options.padRight > 0) number[1] = padRight(number[1], options.padRight);
-    if (options.decimalsSeparator.length) number[1] = addDecimalSeparators(number[0], options.decimalsSeparator);
-    if (separate) number[0] = addIntegerSeparators(number[0], options.integerSeparator);
+    if (separate && number[1]) number[1] = addDecimalSeparators(number[1], options.decimalsSeparator);
+    if (separate && number[0]) number[0] = addIntegerSeparators(number[0], options.integerSeparator);
     output.push(number[0]);
     if (number[1]) {
       output.push(options.decimal);
