@@ -145,35 +145,25 @@ function truncate(x, length) {
     return x;
   }
 }
-function round(number, length) {
-  if (!number[1]) return number
-  var integ = number[0] + ''
-  var decim = number[1] + ''
-  if (decim.length > length) {
-    var decider = +decim[length]
-    if (decider >= 5) {
-      decider = 10
-      decim = decim.substring(0, length)
-    } else if (length === 0) {
-      number.pop()
-      return number
-    } else {
-      number[1] = decim.substring(0, length)
-      return number
-    }
-    while (decider === 10 && decim.length) {
-      decider = (+decim[decim.length - 1]) + 1
-      decim = decim.substring(0, decim.length - 1)
-    }
-    if (decider < 10) {
-      number[1] = decim + decider
-    } else {
-      integ = (+integ) + 1
-      number[0] = integ + ''
-      number.pop()
-    }
-    return number
-  } else {
+
+//where number is an array with 0th item as integer string and 1st item as decimal string (no negatives)
+function round(number, places) {
+  if (!number[1] || places < 0 || number[1].length <= places) {
+    //already rounded
     return number
   }
+
+  //truncate one dp
+  var decim = number[1].slice(0,-1);
+  //if last char was >= 5 we need to round up
+  if (+(number[1].slice(-1)) >= 5) {
+    decim = (+decim + 1) + ''
+    if (decim.length >= number[1].length) {
+      decim = decim.substring(1);   //ignore the 1 at the beginning which is the carry to the integer part
+      number[0] = (+number[0]+1) + '' //add 1 to the integer part
+    }
+  }
+  number[1] = decim;
+  //now try again
+  round(number, places);
 }
