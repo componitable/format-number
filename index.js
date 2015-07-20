@@ -47,12 +47,19 @@ function formatter(options) {
   if (typeof options.negativeRightOut !== "boolean") {
     options.negativeRightOut = (options.negativeOut === false ? false : true);
   }
+  
+  //prefix and suffix
   options.prefix = options.prefix || '';
   options.suffix = options.suffix || '';
-  options.integerSeparator = typeof options.integerSeparator === 'string' ? options.separator : ',';
-  options.integerSeparator = typeof options.integerSeparator === 'string' ? options.integerSeparator : ',';
+  
+  //separators
+  if (typeof options.integerSeparator !== 'string') {
+    options.integerSeparator = (typeof options.separator === 'string' ? options.separator : ',');
+  }
   options.decimalsSeparator = typeof options.decimalsSeparator === 'string' ? options.decimalsSeparator : '';
   options.decimal = options.decimal || '.';
+  
+  //padders
   options.padLeft = options.padLeft || -1 //default no padding
   options.padRight = options.padRight || -1 //default no padding
 
