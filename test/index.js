@@ -117,7 +117,7 @@ describe('round=2', function () {
   });
   describe('512.9947', function () {
     it('returns 513.00', function () {
-      expect(format('512.9947')).to.be('513.00');
+      expect(format('512.9947')).to.be('512.99');
     });
   });
 });
