@@ -90,7 +90,7 @@ function formatter(options) {
     }
     
     //Format core number
-    number = number.split(options.decimal);
+    number = number.split('.');
     if (options.round != null) round(number, options.round);
     if (options.truncate != null) number[1] = truncate(number[1], options.truncate);
     if (options.padLeft > 0) number[0] = padLeft(number[0], options.padLeft);
