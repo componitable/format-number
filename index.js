@@ -152,18 +152,16 @@ function round(number, places) {
     //already rounded
     return number
   }
-
-  //truncate one dp
-  var decim = number[1].slice(0,-1);
-  //if last char was >= 5 we need to round up
-  if (+(number[1].slice(-1)) >= 5) {
+  //truncate places
+  var decim = number[1].slice(0, places);
+  //if next digit was >= 5 we need to round up
+  if (+(number[1].substr(places, 1)) >= 5) {
     decim = (+decim + 1) + ''
-    if (decim.length >= number[1].length) {
+    if (decim.length > places) {
+      //adding one has made it longer
       decim = decim.substring(1);   //ignore the 1 at the beginning which is the carry to the integer part
       number[0] = (+number[0]+1) + '' //add 1 to the integer part
     }
   }
   number[1] = decim;
-  //now try again
-  round(number, places);
 }
