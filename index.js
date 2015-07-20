@@ -1,14 +1,18 @@
+
 module.exports = formatter;
 
 function formatter(options) {
   options = options || {};
+
+  //Set defaults
   options.negative = options.negative === 'R' ? 'R' : 'L';
   options.negativeOut = options.negativeOut === false ? false : true;
   options.prefix = options.prefix || '';
   options.suffix = options.suffix || '';
-  options.separator = typeof options.separator === 'string' ? options.separator : ',';
+  options.integerSeparator = options.integerSeparator || options.separator; //included for backward compatibility
+  options.integerSeparator = typeof options.integerSeparator === 'string' ? options.integerSeparator : ',';
+  options.decimalsSeparator = typeof options.decimalsSeparator === 'string' ? options.decimalsSeparator : '';
   options.decimal = options.decimal || '.';
-  
   options.padLeft = options.padLeft || -1 //default no padding
   options.padRight = options.padRight || -1 //default no padding
 
@@ -22,10 +26,12 @@ function formatter(options) {
       return '';
     }
 
+    //identify a negative number and make it absolute
     var output = [];
     var negative = number.charAt(0) === '-';
     number = number.replace(/^\-/g, '');
 
+    //Prepare output with left hand negative and/or prefix
     if (!options.negativeOut && includeUnits) {
       output.push(options.prefix);
     }
@@ -35,20 +41,22 @@ function formatter(options) {
     if (options.negativeOut && includeUnits) {
       output.push(options.prefix);
     }
-
+    
+    //Format core number
     number = number.split(options.decimal);
     if (options.round != null) round(number, options.round);
     if (options.truncate != null) number[1] = truncate(number[1], options.truncate);
-    if (separate) number[0] = addSeparators(number[0], options.separator);
     if (options.padLeft > 0) number[0] = padLeft(number[0], options.padLeft);
     if (options.padRight > 0) number[1] = padRight(number[1], options.padRight);
+    if (options.decimalsSeparator.length) number[1] = addDecimalSeparators(number[0], options.decimalsSeparator);
+    if (separate) number[0] = addIntegerSeparators(number[0], options.integerSeparator);
     output.push(number[0]);
     if (number[1]) {
       output.push(options.decimal);
       output.push(number[1]);
     }
 
-
+    //Prepare output with right hand negative and/or prefix
     if (options.negativeOut && includeUnits) {
       output.push(options.suffix);
     }
@@ -59,6 +67,7 @@ function formatter(options) {
       output.push(options.suffix);
     }
 
+    //join output and return
     return output.join('');
   }
 
@@ -67,7 +76,8 @@ function formatter(options) {
   format.prefix = options.prefix;
   format.suffix = options.suffix;
   format.separate = options.separate;
-  format.separator = options.separator;
+  format.integerSeparator = options.integerSeparator;
+  format.decimalsSeparator = options.decimalsSeparator;
   format.decimal = options.decimal;
   format.padLeft = options.padLeft;
   format.padRight = options.padRight;
@@ -79,7 +89,8 @@ function formatter(options) {
     if (options.allowedSeparators) {
       options.allowedSeparators.forEach(function (s) { allowedSeparators.push (s); });
     }
-    allowedSeparators.push(options.separator);
+    allowedSeparators.push(options.integerSeparator);
+    allowedSeparators.push(options.decimalsSeparator);
     number = number.replace(options.prefix, '');
     number = number.replace(options.suffix, '');
     var newNumber = number;
@@ -110,7 +121,7 @@ function formatter(options) {
 }
 
 //where x is already the integer part of the number
-function addSeparators(x, separator) {
+function addIntegerSeparators(x, separator) {
   x += '';
   if (!separator) return x;
   var rgx = /(\d+)(\d{3})/;
@@ -120,6 +131,18 @@ function addSeparators(x, separator) {
   return x;
 }
 
+//where x is already the decimal part of the number
+function addDecimalSeparators(x, separator) {
+  x += '';
+  if (!separator) return x;
+  var rgx = /(\d{3})(\d+)/;
+  while (rgx.test(x)) {
+    x = x.replace(rgx, '$1' + separator + '$2');
+  }
+  return x;
+}
+
+//where x is the integer part of the number
 function padLeft(x, padding) {
   x = x + '';
   var buf = [];
@@ -128,6 +151,8 @@ function padLeft(x, padding) {
   }
   return buf.join('') + x;
 }
+
+//where x is the decimals part of the number
 function padRight(x, padding) {
   if (x) {
     x += '';
@@ -150,6 +175,7 @@ function truncate(x, length) {
     return x;
   }
 }
+
 function round(number, length) {
   if (!number[1]) return number
   var integ = number[0] + ''
