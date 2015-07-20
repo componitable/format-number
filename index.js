@@ -4,12 +4,52 @@ module.exports = formatter;
 function formatter(options) {
   options = options || {};
 
-  //Set defaults
-  options.negative = options.negative === 'R' ? 'R' : 'L';
-  options.negativeOut = options.negativeOut === false ? false : true;
+
+  // *********************************************************************************************
+  // Set defaults for negatives
+  // options.negative, options.negativeOut, options.separator retained for backward compatibility
+  // *********************************************************************************************
+
+  // type of negative; default left
+  options.negativeType = options.negativeType || (options.negative === 'R' ? 'right' : 'left')
+
+  // negative symbols '-' or '()'
+  if (typeof options.negativeLeftSymbol !== 'string') {
+    switch (options.negativeType) {
+      case 'left':
+        options.negativeLeftSymbol = '-';
+        break;
+      case 'brackets':
+        options.negativeLeftSymbol = '(';
+        break;
+      default:
+        options.negativeLeftSymbol = '';
+    }
+  }
+  if (typeof options.negativeRightSymbol !== 'string') {
+    switch (options.negativeType) {
+      case 'right':
+        options.negativeRightSymbol = '-';
+        break;
+      case 'brackets':
+        options.negativeRightSymbol = ')';
+        break;
+      default:
+        options.negativeRightSymbol = '';
+    }
+  }
+
+  // whether negative symbol should be inside/outside prefix and suffix
+
+  if (typeof options.negativeLeftOut !== "boolean") {
+    options.negativeLeftOut = (options.negativeOut === false ? false : true);
+  }
+  if (typeof options.negativeRightOut !== "boolean") {
+    options.negativeRightOut = (options.negativeOut === false ? false : true);
+  }
   options.prefix = options.prefix || '';
   options.suffix = options.suffix || '';
-  options.integerSeparator = options.integerSeparator || options.separator; //included for backward compatibility
+  options.integerSeparator = typeof options.integerSeparator === 'string' ? options.separator : ',';
   options.integerSeparator = typeof options.integerSeparator === 'string' ? options.integerSeparator : ',';
   options.decimalsSeparator = typeof options.decimalsSeparator === 'string' ? options.decimalsSeparator : '';
   options.decimal = options.decimal || '.';
@@ -32,13 +72,13 @@ function formatter(options) {
     number = number.replace(/^\-/g, '');
 
     //Prepare output with left hand negative and/or prefix
-    if (!options.negativeOut && includeUnits) {
+    if (!options.negativeLeftOut && includeUnits) {
       output.push(options.prefix);
     }
-    if (negative && options.negative === 'L') {
-      output.push('-');
+    if (negative) {
+      output.push(options.negativeLeftSymbol);
     }
-    if (options.negativeOut && includeUnits) {
+    if (options.negativeLeftOut && includeUnits) {
       output.push(options.prefix);
     }
     
@@ -57,13 +97,13 @@ function formatter(options) {
     }
 
     //Prepare output with right hand negative and/or prefix
-    if (options.negativeOut && includeUnits) {
+    if (options.negativeRightOut && includeUnits) {
       output.push(options.suffix);
     }
-    if (negative && options.negative === 'R') {
-      output.push('-');
+    if (negative) {
+      output.push(options.negativeRightSymbol);
     }
-    if (!options.negativeOut && includeUnits) {
+    if (!options.negativeRightOut && includeUnits) {
       output.push(options.suffix);
     }
 
@@ -73,6 +113,11 @@ function formatter(options) {
 
   format.negative = options.negative;
   format.negativeOut = options.negativeOut;
+  format.negativeType = options.negativeType;
+  format.negativeLeftOut = options.negativeLeftOut;
+  format.negativeLeftSymbol = options.negativeLeftSymbol;
+  format.negativeRightOut = options.negativeRightOut;
+  format.negativeRightSymbol = options.negativeRightSymbol;
   format.prefix = options.prefix;
   format.suffix = options.suffix;
   format.separate = options.separate;
