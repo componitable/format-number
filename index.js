@@ -9,14 +9,19 @@ function formatter(options) {
   options.separator = typeof options.separator === 'string' ? options.separator : ',';
   options.decimal = options.decimal || '.';
   
+  options.padLeft = options.padLeft || -1 //default no padding
+  options.padRight = options.padRight || -1 //default no padding
+
   function format(number, includeUnits, separate) {
     includeUnits = includeUnits === false ? false : true;
     separate = separate === false ? false : true;
+
     if (number || number === 0) {
       number = '' + number;//convert number to string if it isn't already
     } else {
       return '';
     }
+
     var output = [];
     var negative = number.charAt(0) === '-';
     number = number.replace(/^\-/g, '');
@@ -34,9 +39,9 @@ function formatter(options) {
     number = number.split(options.decimal);
     if (options.round != null) round(number, options.round);
     if (options.truncate != null) number[1] = truncate(number[1], options.truncate);
-    if (options.padLeft) number[0] = padLeft(number[0], options.padLeft);
-    if (options.padRight) number[1] = padRight(number[1], options.padRight);
     if (separate) number[0] = addSeparators(number[0], options.separator);
+    if (options.padLeft > 0) number[0] = padLeft(number[0], options.padLeft);
+    if (options.padRight > 0) number[1] = padRight(number[1], options.padRight);
     output.push(number[0]);
     if (number[1]) {
       output.push(options.decimal);
