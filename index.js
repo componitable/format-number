@@ -148,20 +148,19 @@ function truncate(x, length) {
 
 //where number is an array with 0th item as integer string and 1st item as decimal string (no negatives)
 function round(number, places) {
-  if (!number[1] || places < 0 || number[1].length <= places) {
-    //already rounded
-    return number
-  }
-  //truncate places
-  var decim = number[1].slice(0, places);
-  //if next digit was >= 5 we need to round up
-  if (+(number[1].substr(places, 1)) >= 5) {
-    decim = (+decim + 1) + ''
-    if (decim.length > places) {
-      //adding one has made it longer
-      decim = decim.substring(1);   //ignore the 1 at the beginning which is the carry to the integer part
-      number[0] = (+number[0]+1) + '' //add 1 to the integer part
+  if (number[1] && places >= 0 && number[1].length > places) {
+    //truncate to correct number of decimal places
+    var decim = number[1].slice(0, places);
+    //if next digit was >= 5 we need to round up
+    if (+(number[1].substr(places, 1)) >= 5) {
+      decim = (+decim + 1) + ''
+      if (decim.length > places) {
+        //adding one has made it longer
+        decim = decim.substring(1);   //ignore the 1 at the beginning which is the carry to the integer part
+        number[0] = (+number[0]+1) + '' //add 1 to the integer part
+      }
     }
+    number[1] = decim;
   }
-  number[1] = decim;
+  return number;
 }
