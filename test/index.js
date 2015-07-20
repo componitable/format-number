@@ -1,6 +1,7 @@
 var expect = require('expect.js');
 var formatFactory = require('..');
 
+//Defaults
 describe('defaults', function () {
   var format = formatFactory();
   describe('512', function () {
@@ -35,6 +36,7 @@ describe('defaults', function () {
   });
 });
 
+//padRight=2
 describe('padRight=2', function () {
   var format = formatFactory({padRight: 2});
   describe('512', function () {
@@ -59,6 +61,7 @@ describe('padRight=2', function () {
   });
 });
 
+//truncate=2
 describe('truncate=2', function () {
   var format = formatFactory({truncate: 2});
   describe('512', function () {
@@ -83,6 +86,7 @@ describe('truncate=2', function () {
   });
 });
 
+//round=2
 describe('round=2', function () {
   var format = formatFactory({round: 2});
   describe('512', function () {
@@ -131,6 +135,7 @@ describe('round=1', function () {
   });
 });
 
+//round=0
 describe('round=0', function () {
   var format = formatFactory({round: 0});
   describe('512', function () {
@@ -160,6 +165,7 @@ describe('round=0', function () {
   });
 });
 
+//prefix
 describe('prefix=£', function () {
   var format = formatFactory({prefix: '£'});
   describe('512', function () {
@@ -172,15 +178,15 @@ describe('prefix=£', function () {
       expect(format('-512')).to.be('-£512');
     });
   });
-  describe('with includeUnits as false', function () {
+  describe('with noUnits override', function () {
     describe('512', function () {
       it('returns 512', function () {
-        expect(format('512', false)).to.be('512');
+        expect(format('512', {noUnits: true})).to.be('512');
       });
     });
     describe('-512', function () {
       it('returns -512', function () {
-        expect(format('-512', false)).to.be('-512');
+        expect(format('-512', {noUnits: true})).to.be('-512');
       });
     });
   });
@@ -191,6 +197,7 @@ describe('prefix=£', function () {
   });
 });
 
+//suffix
 describe('suffix=" items"', function () {
   var format = formatFactory({suffix: ' items'});
   describe('512', function () {
@@ -209,15 +216,15 @@ describe('suffix=" items"', function () {
     });
   });
 
-  describe('with includeUnits as false', function () {
+  describe('with noUnits override', function () {
     describe('512', function () {
       it('returns 512', function () {
-        expect(format('512', false)).to.be('512');
+        expect(format('512', {noUnits: true})).to.be('512');
       });
     });
     describe('-512', function () {
       it('returns -512', function () {
-        expect(format('-512', false)).to.be('-512');
+        expect(format('-512', {noUnits: true})).to.be('-512');
       });
     });
   });
@@ -246,3 +253,242 @@ describe('decimal=, separator=.', function() {
     })
   })
 })
+
+//negativeType
+describe('negativeType="brackets"', function () {
+  var format = formatFactory({negativeType: 'brackets'});
+  describe('512', function () {
+    it('returns 512', function () {
+      expect(format('512')).to.be('512');
+    });
+  });
+  describe('-512', function () {
+    it('returns (512)', function () {
+      expect(format('-512')).to.be('(512)');
+    });
+  });
+});
+describe('negativeType="right"', function () {
+  var format = formatFactory({negativeType: 'right'});
+  describe('512', function () {
+    it('returns 512', function () {
+      expect(format('512')).to.be('512');
+    });
+  });
+  describe('-512', function () {
+    it('returns 512-', function () {
+      expect(format('-512')).to.be('512-');
+    });
+  });
+});
+describe('negativeType="left"', function () {
+  var format = formatFactory({negativeType: 'left'});
+  describe('512', function () {
+    it('returns 512', function () {
+      expect(format('512')).to.be('512');
+    });
+  });
+  describe('-512', function () {
+    it('returns -512', function () {
+      expect(format('-512')).to.be('-512');
+    });
+  });
+});
+//negative for backward compatibility
+describe('negative="R"', function () {
+  var format = formatFactory({negative: 'R'});
+  describe('512', function () {
+    it('returns 512', function () {
+      expect(format('512')).to.be('512');
+    });
+  });
+  describe('-512', function () {
+    it('returns 512-', function () {
+      expect(format('-512')).to.be('512-');
+    });
+  });
+});
+describe('negative="L"', function () {
+  var format = formatFactory({negative: 'L'});
+  describe('512', function () {
+    it('returns 512', function () {
+      expect(format('512')).to.be('512');
+    });
+  });
+  describe('-512', function () {
+    it('returns -512', function () {
+      expect(format('-512')).to.be('-512');
+    });
+  });
+});
+
+
+//negative....Out
+describe('negativeLeftOut"', function () {
+  var format = formatFactory({negativeType: 'brackets', prefix: '£', suffix: '/item',
+                              negativeLeftOut: true, negativeRightOut: false});
+  describe('512', function () {
+    it('returns £512/item', function () {
+      expect(format('512')).to.be('£512/item');
+    });
+  });
+  describe('512', function () {
+    it('returns (£512)/item', function () {
+      expect(format('-512')).to.be('(£512)/item');
+    });
+  });
+});
+describe('negativeRightOut"', function () {
+  var format = formatFactory({negativeType: 'brackets', prefix: '£', suffix: '/item',
+                              negativeLeftOut: false, negativeRightOut: true});
+  describe('512', function () {
+    it('returns £512/item', function () {
+      expect(format('512')).to.be('£512/item');
+    });
+  });
+  describe('512', function () {
+    it('returns £(512/item)', function () {
+      expect(format('-512')).to.be('£(512/item)');
+    });
+  });
+});
+describe('negativeLeftOut and negativeRightOut both true"', function () {
+  var format = formatFactory({negativeType: 'brackets', prefix: '£', suffix: '/item',
+                              negativeLeftOut: true, negativeRightOut: true});
+  describe('512', function () {
+    it('returns £512/item', function () {
+      expect(format('512')).to.be('£512/item');
+    });
+  });
+  describe('512', function () {
+    it('returns (£512/item)', function () {
+      expect(format('-512')).to.be('(£512/item)');
+    });
+  });
+});
+describe('negativeLeftOut and negativeRightOut both false"', function () {
+  var format = formatFactory({negativeType: 'brackets', prefix: '£', suffix: '/item',
+                              negativeLeftOut: false, negativeRightOut: false});
+  describe('512', function () {
+    it('returns £512/item', function () {
+      expect(format('512')).to.be('£512/item');
+    });
+  });
+  describe('512', function () {
+    it('returns £(512)/item', function () {
+      expect(format('-512')).to.be('£(512)/item');
+    });
+  });
+});
+//backward compatibility with negativeOut
+describe('backward compatibility with negativeOut true"', function () {
+  var format = formatFactory({negativeType: 'brackets', prefix: '£', suffix: '/item',
+                              negativeOut: true});
+  describe('512', function () {
+    it('returns £512/item', function () {
+      expect(format('512')).to.be('£512/item');
+    });
+  });
+  describe('512', function () {
+    it('returns (£512/item)', function () {
+      expect(format('-512')).to.be('(£512/item)');
+    });
+  });
+});
+describe('backward compatibility with negativeOut false"', function () {
+  var format = formatFactory({negativeType: 'brackets', prefix: '£', suffix: '/item',
+                              negativeOut: false});
+  describe('512', function () {
+    it('returns £512/item', function () {
+      expect(format('512')).to.be('£512/item');
+    });
+  });
+  describe('512', function () {
+    it('returns £(512)/item', function () {
+      expect(format('-512')).to.be('£(512)/item');
+    });
+  });
+});
+
+//separators
+describe('integerSeparator = " "', function () {
+  var format = formatFactory({integerSeparator: " "});
+  describe('5123423.1234567', function () {
+    it('returns 5 123 423.1234567', function () {
+      expect(format('5123423.1234567')).to.be('5 123 423.1234567');
+    });
+  });
+  describe('with noSeparatorOverride', function () {
+    describe('5123423.1234567', function () {
+      it('returns 5123423.1234567', function () {
+        expect(format('5123423.1234567', {noSeparator: true})).to.be('5123423.1234567');
+      });
+    });
+  });
+});
+describe('decimalsSeparator = " "', function () {
+  var format = formatFactory({integerSeparator: "", decimalsSeparator: " "});
+  describe('5123423.1234567', function () {
+    it('returns 5123423.123 456 7', function () {
+      expect(format('5123423.1234567')).to.be('5123423.123 456 7');
+    });
+  });
+  describe('with noSeparator override', function () {
+    describe('5123423.1234567', function () {
+      it('returns 5123423.1234567', function () {
+        expect(format('5123423.1234567', {noSeparator: true})).to.be('5123423.1234567');
+      });
+    });
+  });
+});
+//for backwards compatibility
+describe('separator = " "', function () {
+  var format = formatFactory({separator: " "});
+  describe('5123423.1234567', function () {
+    it('returns 5 123 423.1234567', function () {
+      expect(format('5123423.1234567')).to.be('5 123 423.1234567');
+    });
+  });
+  describe('with noSeparator override', function () {
+    describe('5123423.1234567', function () {
+      it('returns 5123423.1234567', function () {
+        expect(format('5123423.1234567', {noSeparator: true})).to.be('5123423.1234567');
+      });
+    });
+  });
+});
+
+//decimal
+describe('decimal = "."', function () {
+  var format = formatFactory({integerSeparator: " ", decimal:"."});
+  describe('5123423.1234567', function () {
+    it('returns 5 123 423.1234567', function () {
+      expect(format('5123423.1234567')).to.be('5 123 423.1234567');
+    });
+  });
+});
+describe('decimal = ","', function () {
+  var format = formatFactory({integerSeparator: " ", decimal:","});
+  describe('5123423.1234567', function () {
+    it('returns 5 123 423,1234567', function () {
+      expect(format('5123423.1234567')).to.be('5 123 423,1234567');
+    });
+  });
+});
+
+//miscellaneous
+describe('£68,932/item', function () {
+  it('£68,932/item', function () {
+    expect(formatFactory({prefix: '£', suffix: '/item'})(68932)).to.be('£68,932/item');
+  });
+});
+describe('£68,932/items with no units', function () {
+  it('68,932', function () {
+    expect(formatFactory({prefix: '£', suffix: '/item'})(68932, {noUnits: true})).to.be('68,932');
+  });
+});
+describe('£68,932/items with no separators', function () {
+  it('£68932/item', function () {
+    expect(formatFactory({prefix: '£', suffix: '/item'})(68932, {noSeparator: true})).to.be('£68932/item');
+  });
+});
