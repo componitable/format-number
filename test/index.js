@@ -110,6 +110,16 @@ describe('round=2', function () {
       expect(format('512.434')).to.be('512.43');
     });
   });
+  describe('512.996', function () {
+    it('returns 513.00', function () {
+      expect(format('512.996')).to.be('513.00');
+    });
+  });
+  describe('512.9947', function () {
+    it('returns 513.00', function () {
+      expect(format('512.9947')).to.be('513.00');
+    });
+  });
 });
 
 describe('round=0', function () {
@@ -132,6 +142,11 @@ describe('round=0', function () {
   describe('512.50', function () {
     it('returns 513', function () {
       expect(format('512.50')).to.be('513');
+    });
+  });
+  describe('519.6', function () {
+    it('returns 520', function () {
+      expect(format('519.6')).to.be('520');
     });
   });
 });
