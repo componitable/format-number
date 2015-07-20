@@ -122,6 +122,15 @@ describe('round=2', function () {
   });
 });
 
+describe('round=1', function () {
+  var format = formatFactory({round: 1});
+  describe('0.249', function () {
+    it('returns 0.2', function () {
+      expect(format('0.249')).to.be('0.2');
+    });
+  });
+});
+
 describe('round=0', function () {
   var format = formatFactory({round: 0});
   describe('512', function () {
