@@ -8,7 +8,7 @@ Highly configurable formatter that expects a valid number in 'computer' format a
 - `negativeLeftSymbol` string: default = '-' if `negativeType` is 'left', '(' if `negativeType` is 'brackets' and '' otherwise
 - `negativeRightSymbol` string: default = '-' if `negativeType` is 'right', ')' if `negativeType` is 'brackets' and '' otherwise
 - `negativeLeftOut` boolean: whether the left symbol should be outside, ie precede the prefix; default = true
-- `negativeLeftOut` boolean: whether the left symbol should be outside, ie precede the prefix; default = true
+- `negativeRightOut` boolean: whether the right symbol should be outside, ie follow the suffix; default = true
 - `prefix` string: default = ''
 - `suffix` string: default = ''
 - `integerSeparator` string: to be used as the thousands separator; default = ','
