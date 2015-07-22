@@ -184,7 +184,7 @@ describe('suffix=" items"', function () {
       expect(format('')).to.be('');
     });
   });
-  
+
   describe('with includeUnits as false', function () {
     describe('512', function () {
       it('returns 512', function () {
@@ -203,3 +203,22 @@ describe('suffix=" items"', function () {
     });
   });
 });
+
+describe('decimal=, separator=.', function() {
+  var format = formatFactory({decimal: ',', separator: '.'});
+  describe('512', function() {
+    it('returns 512', function() {
+      expect(format('512')).to.be('512')
+    })
+  })
+  describe('1024', function() {
+    it('returns 1.024', function() {
+      expect(format('1024')).to.be('1.024')
+    })
+  })
+  describe('512.4', function() {
+    it('returns 512,4', function() {
+      expect(format('512.4')).to.be('512,4')
+    })
+  })
+})
