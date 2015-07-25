@@ -8,7 +8,7 @@ function formatter(options) {
   options.suffix = options.suffix || '';
   options.separator = typeof options.separator === 'string' ? options.separator : ',';
   options.decimal = options.decimal || '.';
-  
+
   function format(number, includeUnits, separate) {
     includeUnits = includeUnits === false ? false : true;
     separate = separate === false ? false : true;
@@ -31,7 +31,7 @@ function formatter(options) {
       output.push(options.prefix);
     }
 
-    number = number.split(options.decimal);
+    number = number.split('.');
     if (options.round != null) round(number, options.round);
     if (options.truncate != null) number[1] = truncate(number[1], options.truncate);
     if (options.padLeft) number[0] = padLeft(number[0], options.padLeft);
