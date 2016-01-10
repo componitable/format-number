@@ -124,6 +124,16 @@ describe('round=2', function () {
       expect(format('512.9947')).to.be('512.99');
     });
   });
+  describe('0.046', function () {
+    it('returns 0.05', function () {
+      expect(format('0.046')).to.be('0.05');
+    });
+  });
+  describe('0.096', function () {
+    it('returns 0.10', function () {
+      expect(format('0.096')).to.be('0.10');
+    });
+  });
 });
 
 describe('round=1', function () {
