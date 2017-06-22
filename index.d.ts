@@ -21,9 +21,7 @@ declare module "format-number" {
     noSeparator?: boolean;
   }
 
-  function formatter(options?: IFormatNumberOptions): format;
+  export default function formatter(options?: IFormatNumberOptions): format;
 
   type format = (number: number, overrideOptions?: IFormatNumberOverrideOptions) => string;
-
-  export = formatter;
 }
