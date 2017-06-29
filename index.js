@@ -1,5 +1,6 @@
 
 module.exports = formatter;
+module.exports.default = formatter;
 
 function formatter(options) {
   options = options || {};
