@@ -42,7 +42,7 @@ var formattedNumber = myFormat(68932, {noSeparator: true});
 
 will both set formattedNumber to '£68932/item'
 
-The override options can be ommitted:
+The override options can be omitted:
 
 ```
 var format=require('format-number');
