@@ -3,6 +3,9 @@
 
 Highly configurable formatter that expects a valid number in 'computer' format and accepts the following as options for formatting
 
+## Installation
+`npm install format-number`
+
 ## Options
 
 - `negativeType` string: 'right','left','brackets','none'; default = 'left' (note only used for setting of default symbols)
@@ -27,15 +30,15 @@ Highly configurable formatter that expects a valid number in 'computer' format a
 
 ## Usage
 
-```
-var format=require('format-number');
+```javascript
+var format = require('format-number');
 var formattedNumber = format({prefix: '£', suffix: '/item'})(68932, {noSeparator: true});
 ```
 
 or
 
-```
-var format=require('format-number');
+```javascript
+var format = require('format-number');
 var myFormat = format({prefix: '£', suffix: '/item'});
 var formattedNumber = myFormat(68932, {noSeparator: true});
 ```
@@ -44,8 +47,8 @@ will both set formattedNumber to '£68932/item'
 
 The override options can be ommitted:
 
-```
-var format=require('format-number');
+```javascript
+var format = require('format-number');
 var formattedNumber = format({prefix: '£', suffix: '/item'})(68932);
 ```
 
