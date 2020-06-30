@@ -13,7 +13,7 @@ Highly configurable formatter that expects a valid number in 'computer' format a
 - `prefix` string: default = ''
 - `suffix` string: default = ''
 - `integerSeparator` string: to be used as the thousands separator; default = ','
-- `decimalsSeparator` string: to be used as the thousanths separator; default = ''
+- `decimalsSeparator` string: to be used as the decimal separator; default = '.'
 - `decimal` string: char to be used as decimal point; default = '.'
 - `padLeft` number: leading 0s will be added to left of number to make integer part this length; default = -1 /no padding
 - `padRight` number: trailing 0s will be added; default = -1 /no padding
