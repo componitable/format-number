@@ -502,3 +502,16 @@ describe('£68,932/items with no separators', function () {
     expect(formatFactory({prefix: '£', suffix: '/item'})(68932, {noSeparator: true})).to.be('£68932/item');
   });
 });
+
+//scientific notation
+describe('scientific notation', function() {
+  it('get rid of "e-"', function () {
+    expect(formatFactory()(1.23456e-10)).to.be('0.000000000123456');
+  });
+  it('round', function () {
+    expect(formatFactory({round: 2})(1.4551915228366852e-11)).to.be('0.00');
+  });
+  it('truncate', function () {
+    expect(formatFactory({truncate: 2})(1.29995068248398e-16)).to.be('0.00');
+  });
+});
