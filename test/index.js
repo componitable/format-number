@@ -420,6 +420,19 @@ describe('backward compatibility with negativeOut false"', function () {
   });
 });
 
+//zero without negative symbol
+describe('always show zero without negative symbol', function () {
+  it('positive zero', function () {
+    expect(formatFactory({round: 2})('0.0000123')).to.be('0.00');
+  });
+  it('exactly zero', function () {
+    expect(formatFactory({round: 2})('0.0000000')).to.be('0.00');
+  });
+  it('negative zero', function () {
+    expect(formatFactory({round: 2})('-0.0000123')).to.be('0.00');
+  });
+});
+
 //separators
 describe('integerSeparator = " "', function () {
   var format = formatFactory({integerSeparator: " "});
