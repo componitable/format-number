@@ -25,28 +25,35 @@ Highly configurable formatter that expects a valid number in 'computer' format a
 - `noUnits` boolean: if true will override and leave out prefix and suffix; default= false
 - `noSeparator` - boolean: if true will override both integer and decimals separator and leave them out
 
+
+## Import
+```javascript
+// CommonJS
+var formatNumber = require('format-number');
+
+// ES6
+import formatNumber from 'format-number';
+```
+
 ## Usage
 
-```
-var format=require('format-number');
-var formattedNumber = format({prefix: '£', suffix: '/item'})(68932, {noSeparator: true});
+```javascript
+var formattedNumber = formatNumber({prefix: '£', suffix: '/item'})(68932, {noSeparator: true});
+>> '£68932/item'
 ```
 
 or
 
-```
-var format=require('format-number');
-var myFormat = format({prefix: '£', suffix: '/item'});
+```javascript
+var myFormat = formatNumber({prefix: '£', suffix: '/item'});
 var formattedNumber = myFormat(68932, {noSeparator: true});
+>> '£68932/item'
 ```
 
 will both set formattedNumber to '£68932/item'
 
 The override options can be ommitted:
-
+```javascript
+var formattedNumber = formatNumber({prefix: '£', suffix: '/item'})(68932);
+>> '£68,932/item'
 ```
-var format=require('format-number');
-var formattedNumber = format({prefix: '£', suffix: '/item'})(68932);
-```
-
-returns '£68,932/item'
