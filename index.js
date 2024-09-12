@@ -68,6 +68,17 @@ function formatter(options) {
     overrideOptions = overrideOptions || {};
 
     if (number || number === 0) {
+      if (typeof number === 'number') {
+        //get rid of the possible "e-"
+        var parts = number.toString().split('e-');
+        if (parts.length === 2) {
+          var digits = (parts[0].replace('.', '').replace('-', '')).length - 1 + Number(parts[1]);
+          //maximum number of digits is 20
+          //see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed
+          digits = digits > 20 ? 20 : digits;
+          number = number.toFixed(digits);
+        }
+      }
       number = '' + number;//convert number to string if it isn't already
     } else {
       return '';
